@@ -8,27 +8,31 @@ import { useAssessment } from './hooks/useAssessment.js';
 import './index.css';
 
 export default function App() {
-  const { step, setStep, userInfo, setUserInfo, answers, submitAnswer, report, generateReport, unlocked, setUnlocked } = useAssessment();
+  const {
+    step, setStep, userInfo, setUserInfo,
+    answers, submitAnswer, report, generateReport,
+    unlocked, setUnlocked,
+  } = useAssessment();
 
-  const handleReset = () => window.location.reload();
+  const reset = () => window.location.reload();
 
   return (
     <div className="app">
-      <Header step={step} onReset={handleReset}/>
-      <main className="main-content">
-        {step === 'welcome'  && <WelcomeScreen onStart={() => setStep('userinfo')}/>}
-        {step === 'userinfo' && <UserInfoForm onSubmit={(info) => { setUserInfo(info); setStep('quiz'); }}/>}
-        {step === 'quiz'     && <QuizInterface answers={answers} onAnswer={submitAnswer} onComplete={generateReport}/>}
-        {step === 'loading'  && <LoadingScreen/>}
-        {step === 'results'  && report && (
+      <Header step={step} onReset={reset} />
+      <div className="app-body">
+        {step === 'welcome'  && <WelcomeScreen onStart={() => setStep('userinfo')} />}
+        {step === 'userinfo' && <UserInfoForm onSubmit={info => { setUserInfo(info); setStep('quiz'); }} />}
+        {step === 'quiz'     && <QuizInterface answers={answers} onAnswer={submitAnswer} onComplete={generateReport} />}
+        {step === 'loading'  && <LoadingScreen />}
+        {step === 'results' && report && (
           <ResultsDashboard
             report={report}
             unlocked={unlocked}
             onUnlock={() => setUnlocked(true)}
-            onReset={handleReset}
+            onReset={reset}
           />
         )}
-      </main>
+      </div>
       <footer className="app-footer">
         <span>© {new Date().getFullYear()} GIMI-IAOIP · Global Innovation Management Institute</span>
         <span>ISO 56002+ Aligned · 18,000+ Professionals · 60+ Countries</span>

@@ -1,80 +1,95 @@
 import ScoreRing from './ScoreRing.jsx';
 import { allProfiles } from '../utils/profiles.js';
 
+const scoreColor = s => s >= 67 ? '#059669' : s >= 34 ? '#D97706' : '#DC2626';
+
 export default function ArchetypeCard({ report }) {
   const { profile, scores, userInfo } = report;
-  const mindsetColor = scores.mindset >= 67 ? '#059669' : scores.mindset >= 34 ? '#D97706' : '#DC2626';
-  const ktColor = scores.kt >= 67 ? '#059669' : scores.kt >= 34 ? '#D97706' : '#DC2626';
+  const mc = scoreColor(scores.mindset);
+  const kc = scoreColor(scores.kt);
 
   return (
-    <div className="archetype-card">
-      <div className="archetype-header" style={{background:`linear-gradient(135deg, #041628 0%, ${profile.color}33 100%)`}}>
-        <div className="archetype-emoji">{profile.emoji}</div>
-        <div className="archetype-header-text">
-          {userInfo?.name && <p className="archetype-name-greeting">Hello, {userInfo.name} 👋</p>}
-          <h2 className="archetype-profile-name">{profile.name}</h2>
-          <p className="archetype-tagline">{profile.tagline}</p>
-          {userInfo?.jobTitle && <p className="archetype-role">{userInfo.jobTitle}{userInfo.country ? ` · ${userInfo.country}` : ''}</p>}
+    <div className="profile-hero">
+      {/* Banner */}
+      <div className="profile-hero-banner"
+           style={{ background: `linear-gradient(135deg, #041628 0%, ${profile.color}55 100%)` }}>
+        <span className="profile-hero-emoji">{profile.emoji}</span>
+        <div className="profile-hero-text">
+          {userInfo?.name && <p className="profile-hero-greeting">Hello, {userInfo.name} 👋</p>}
+          <h2 className="profile-hero-name">{profile.name}</h2>
+          <p className="profile-hero-tagline">{profile.tagline}</p>
+          {userInfo?.jobTitle && (
+            <p className="profile-hero-role">{userInfo.jobTitle}{userInfo.country ? ` · ${userInfo.country}` : ''}</p>
+          )}
         </div>
       </div>
 
-      <div className="archetype-scores">
-        <div className="archetype-score-item">
-          <ScoreRing score={scores.mindset} size={90} color={mindsetColor} label="Mindset"/>
+      {/* Score row */}
+      <div className="profile-hero-scores">
+        <div className="hero-score-item">
+          <span className="hero-score-label">Innovation Mindset</span>
+          <div className="score-ring-wrap">
+            <ScoreRing score={scores.mindset} size={88} color={mc} />
+          </div>
         </div>
-        <div className="archetype-score-divider"/>
-        <div className="archetype-score-item">
-          <ScoreRing score={scores.kt} size={90} color={ktColor} label="Know. & Tools"/>
+        <div className="hero-score-item">
+          <span className="hero-score-label">Knowledge & Tools</span>
+          <div className="score-ring-wrap">
+            <ScoreRing score={scores.kt} size={88} color={kc} />
+          </div>
         </div>
       </div>
 
-      <div className="archetype-description">
-        <p>{profile.description}</p>
+      {/* Description */}
+      <div style={{ padding: '18px 24px 20px', borderTop: '1px solid #DDE4EE' }}>
+        <p style={{ fontSize: 13, color: '#374B62', lineHeight: 1.65 }}>{profile.description}</p>
       </div>
 
-      <ProfilePlot profile={profile} scores={scores}/>
+      {/* Plot */}
+      <ProfilePlot profile={profile} scores={scores} />
     </div>
   );
 }
 
 function ProfilePlot({ profile, scores }) {
-  const W = 280, H = 220;
-  const pad = 30;
-  const toX = v => pad + (v / 100) * (W - pad*2);
-  const toY = v => H - pad - (v / 100) * (H - pad*2);
+  const W = 300, H = 200, pad = 32;
+  const toX = v => pad + (v / 100) * (W - pad * 2);
+  const toY = v => H - pad - (v / 100) * (H - pad * 2);
 
   return (
-    <div className="profile-plot-wrap">
-      <p className="plot-label">Your position among the 7 Innovation Profiles</p>
-      <svg viewBox={`0 0 ${W} ${H}`} className="profile-plot-svg">
-        {/* Axes */}
-        <line x1={pad} y1={H-pad} x2={W-pad} y2={H-pad} stroke="#CDD9E8" strokeWidth="1"/>
-        <line x1={pad} y1={pad} x2={pad} y2={H-pad} stroke="#CDD9E8" strokeWidth="1"/>
-        <text x={W/2} y={H-6} textAnchor="middle" fontSize="9" fill="#7A95AE">Knowledge &amp; Tools →</text>
-        <text x={10} y={H/2} textAnchor="middle" fontSize="9" fill="#7A95AE" transform={`rotate(-90 10 ${H/2})`}>Mindset →</text>
-
-        {/* Grid */}
-        {[33,67].map(v=>(
+    <div style={{ padding: '0 20px 20px', borderTop: '1px solid #F0F4F9' }}>
+      <p style={{ fontSize: 11, color: '#6B7E95', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.05em', margin: '14px 0 10px' }}>
+        Your position among the 7 Innovation Profiles
+      </p>
+      <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', background: '#F4F7FB', borderRadius: 10 }}>
+        {/* Grid lines */}
+        {[33, 67].map(v => (
           <g key={v}>
-            <line x1={toX(v)} y1={pad} x2={toX(v)} y2={H-pad} stroke="#E8EFF8" strokeWidth="1" strokeDasharray="3,3"/>
-            <line x1={pad} y1={toY(v)} x2={W-pad} y2={toY(v)} stroke="#E8EFF8" strokeWidth="1" strokeDasharray="3,3"/>
+            <line x1={toX(v)} y1={pad} x2={toX(v)} y2={H - pad} stroke="#DDE4EE" strokeWidth="1" strokeDasharray="3,3" />
+            <line x1={pad} y1={toY(v)} x2={W - pad} y2={toY(v)} stroke="#DDE4EE" strokeWidth="1" strokeDasharray="3,3" />
           </g>
         ))}
+        {/* Axes */}
+        <line x1={pad} y1={H - pad} x2={W - pad} y2={H - pad} stroke="#CDD9E8" strokeWidth="1" />
+        <line x1={pad} y1={pad} x2={pad} y2={H - pad} stroke="#CDD9E8" strokeWidth="1" />
+        <text x={W / 2} y={H - 8} textAnchor="middle" fontSize="9" fill="#6B7E95">Knowledge &amp; Tools →</text>
+        <text x={12} y={H / 2} textAnchor="middle" fontSize="9" fill="#6B7E95" transform={`rotate(-90 12 ${H / 2})`}>Mindset →</text>
 
         {/* Profile dots */}
         {allProfiles.map(p => {
-          const px = toX(p.plotX), py = toY(p.plotY);
           const isMe = p.id === profile.id;
+          const px = toX(p.plotX), py = toY(p.plotY);
           return (
             <g key={p.id}>
-              <circle cx={px} cy={py} r={isMe?11:7} fill={isMe?p.color:p.color+'66'} stroke={isMe?p.color:'none'} strokeWidth="2"/>
-              <text x={px} y={py+1} textAnchor="middle" dominantBaseline="middle" fontSize={isMe?9:7} fill={isMe?"#fff":"#fff"}>{p.emoji}</text>
+              <circle cx={px} cy={py} r={isMe ? 13 : 9} fill={isMe ? p.color : p.color + '55'} />
+              <text x={px} y={py + 1} textAnchor="middle" dominantBaseline="middle" fontSize={isMe ? 10 : 8}>{p.emoji}</text>
             </g>
           );
         })}
 
-        {/* User position indicator */}
-        <circle cx={toX(scores.kt)} cy={toY(scores.mindset)} r={14} fill="none" stroke={profile.color} strokeWidth="2.5" strokeDasharray="4,2"/>
+        {/* User exact position ring */}
+        <circle cx={toX(scores.kt)} cy={toY(scores.mindset)} r={17} fill="none"
+          stroke={profile.color} strokeWidth="2.5" strokeDasharray="5,3" opacity=".7" />
       </svg>
     </div>
   );

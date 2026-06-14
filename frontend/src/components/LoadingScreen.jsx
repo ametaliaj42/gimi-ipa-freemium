@@ -1,30 +1,35 @@
 import { useEffect, useState } from 'react';
 
-const steps = [
-  'Analysing your innovation mindset…',
-  'Evaluating knowledge & tools…',
-  'Mapping your innovation profile…',
-  'Generating your personalised report…',
+const STEPS = [
+  { icon: '🧠', label: 'Analysing your Innovation Mindset…' },
+  { icon: '🔧', label: 'Evaluating Knowledge & Tools…' },
+  { icon: '🗺️', label: 'Mapping your Innovation Profile…' },
+  { icon: '✨', label: 'Generating your personalised report…' },
 ];
 
 export default function LoadingScreen() {
-  const [idx, setIdx] = useState(0);
+  const [active, setActive] = useState(0);
   useEffect(() => {
-    const t = setInterval(() => setIdx(i => Math.min(i+1, steps.length-1)), 550);
+    const t = setInterval(() => setActive(i => Math.min(i + 1, STEPS.length - 1)), 520);
     return () => clearInterval(t);
   }, []);
   return (
-    <div className="loading-screen">
+    <div className="loading-wrap">
       <div className="loading-card">
-        <div className="loading-spinner"/>
-        <h2 className="loading-title">Building Your Innovation Profile</h2>
+        <div className="loading-ring" />
+        <h2 className="loading-h">Building Your Innovation Profile</h2>
         <div className="loading-steps">
-          {steps.map((s, i) => (
-            <div key={i} className={`loading-step ${i <= idx ? 'loading-step-active' : ''}`}>
-              <span className="loading-step-dot">{i < idx ? '✓' : i === idx ? '◉' : '○'}</span>
-              <span>{s}</span>
-            </div>
-          ))}
+          {STEPS.map((s, i) => {
+            const state = i < active ? 'done' : i === active ? 'active' : '';
+            return (
+              <div key={i} className={`loading-step ${state}`}>
+                <span className="loading-step-icon">
+                  {i < active ? '✓' : i === active ? s.icon : '○'}
+                </span>
+                <span>{s.label}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

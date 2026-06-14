@@ -1,9 +1,18 @@
-export default function ProgressBar({ current, total }) {
+const SECTION_LABELS = { mindset: 'Innovation Mindset', knowledge: 'Knowledge & Tools' };
+const SECTION_COLORS = { mindset: '#00ACC1', knowledge: '#7C3AED' };
+
+export default function ProgressBar({ current, total, section }) {
   const pct = Math.round((current / total) * 100);
+  const color = SECTION_COLORS[section] || '#00ACC1';
   return (
-    <div className="progress-bar-wrap">
-      <div className="progress-bar-track"><div className="progress-bar-fill" style={{width:`${pct}%`}}/></div>
-      <span className="progress-bar-label">Question {current} of {total}</span>
+    <div className="quiz-progress-bar">
+      <div className="progress-header">
+        <span className="progress-section" style={{ color }}>{SECTION_LABELS[section] || 'Assessment'}</span>
+        <span className="progress-count">{current} / {total}</span>
+      </div>
+      <div className="progress-track">
+        <div className="progress-fill" style={{ width: `${pct}%`, background: color }} />
+      </div>
     </div>
   );
 }

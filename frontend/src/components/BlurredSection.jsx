@@ -1,17 +1,23 @@
-export default function BlurredSection({ unlocked, onUnlockClick, children, title }) {
+export default function BlurredSection({ unlocked, onUnlock, title, children }) {
   return (
-    <div className="blurred-section-wrap">
+    <div className="gated-section">
       {!unlocked && (
-        <div className="blurred-section-overlay">
-          <div className="blurred-overlay-card">
-            <div className="blurred-lock-icon">🔒</div>
-            <h3>Unlock Full Report</h3>
-            <p>Access your detailed {title} results, drivers, enablers, barriers, and personalised training path.</p>
-            <button className="btn-unlock" onClick={onUnlockClick}>Unlock for $50 →</button>
+        <div className="gated-overlay">
+          <div className="gated-cta-card">
+            <div className="gated-cta-icon">🔒</div>
+            <h3 className="gated-cta-h">Unlock {title}</h3>
+            <p className="gated-cta-p">
+              Access your detailed breakdown, drivers, enablers, barriers, and personalised GIMI training path.
+            </p>
+            <button className="btn btn-navy btn-full" onClick={onUnlock}>
+              Unlock Full Report — $50 →
+            </button>
           </div>
         </div>
       )}
-      <div className={unlocked ? '' : 'blurred-content'}>{children}</div>
+      <div className={`gated-inner${unlocked ? '' : ' blurred'}`}>
+        {children}
+      </div>
     </div>
   );
 }
