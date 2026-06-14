@@ -11,82 +11,60 @@ import LinkedInShare from './LinkedInShare.jsx';
 export default function ResultsDashboard({ report, unlocked, onUnlock, onReset }) {
   const [showUnlock, setShowUnlock] = useState(false);
   const [showStripe, setShowStripe] = useState(false);
+  const { profile, scores, gatedContent } = report;
 
-  const { scores, profile, gatedContent } = report;
-  const mc = scores.mindset >= 67 ? '#059669' : scores.mindset >= 34 ? '#D97706' : '#DC2626';
-  const kc = scores.kt     >= 67 ? '#059669' : scores.kt     >= 34 ? '#D97706' : '#DC2626';
-
-  const handleUnlockClick = () => setShowUnlock(true);
-  const handlePay = () => { setShowUnlock(false); setShowStripe(true); };
-  const handlePaySuccess = () => { setShowStripe(false); onUnlock(); };
+  const openUnlock = () => setShowUnlock(true);
+  const pay = () => { setShowUnlock(false); setShowStripe(true); };
+  const paid = () => { setShowStripe(false); onUnlock(); };
 
   return (
-    <div className="results-wrap">
+    <div className="results-page">
       {/* Top bar */}
-      <div className="results-top-bar">
+      <div className="results-topbar">
         <div>
-          <div className="results-top-h">Your Innovation Profile</div>
-          <div className="results-top-sub">Based on your self-assessment across 16 dimensions</div>
+          <div className="results-topbar-h">Your Innovation Profile</div>
+          <div className="results-topbar-sub">Scored across 8 dimensions · {new Date().toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' })}</div>
         </div>
-        <button className="btn btn-ghost btn-sm" onClick={onReset}>Retake Assessment</button>
+        <button className="btn btn-ghost" onClick={onReset}>Retake</button>
       </div>
 
-      {/* Profile hero — full width */}
+      {/* 1. Profile hero — always visible */}
       <ArchetypeCard report={report} />
 
-      {/* Score mini-cards */}
-      <div className="scores-row">
-        <div className="score-mini-card">
-          <div>
-            <div className="score-mini-label">Innovation Mindset</div>
-            <div className="score-mini-sub">Growth Mindset, Grit, Creative Collaboration, Flexible Execution</div>
-          </div>
-          <div className="score-mini-val" style={{ color: mc }}>{scores.mindset}</div>
-        </div>
-        <div className="score-mini-card">
-          <div>
-            <div className="score-mini-label">Knowledge & Tools</div>
-            <div className="score-mini-sub">Intent, Concepts, Resources, Make it Real</div>
-          </div>
-          <div className="score-mini-val" style={{ color: kc }}>{scores.kt}</div>
-        </div>
-      </div>
-
-      {/* LinkedIn share */}
+      {/* 2. Share */}
       <LinkedInShare profile={profile} scores={scores} />
 
-      {/* Unlock CTA if not paid */}
+      {/* 3. Unlock CTA — only if not paid */}
       {!unlocked && (
-        <div className="unlock-side-cta">
-          <div className="usc-icon">🔓</div>
-          <h3 className="usc-h">Unlock Your Full Report</h3>
-          <p className="usc-p">
-            Get your complete Innovation Profile breakdown — drivers, enablers, barriers across all 8 dimensions, plus your personalised GIMI certification path.
-          </p>
-          <div className="usc-price">$50 · One-time</div>
-          <button className="btn btn-primary btn-lg" onClick={handleUnlockClick}
-            style={{ minWidth: 220 }}>
-            Unlock Full Report →
-          </button>
+        <div className="unlock-cta-block">
+          <div className="ucb-left">
+            <div className="ucb-icon">🔓</div>
+            <h3 className="ucb-h">Unlock Your Full Report</h3>
+            <p className="ucb-p">Get the complete breakdown of all 8 dimensions — drivers, enablers, and barriers — plus your personalised GIMI certification path.</p>
+          </div>
+          <div className="ucb-right">
+            <div className="ucb-price">$50</div>
+            <div className="ucb-note">One-time · Instant access</div>
+            <button className="btn btn-teal btn-lg" onClick={openUnlock}>Unlock Now →</button>
+          </div>
         </div>
       )}
 
-      {/* Gated sections — all single-column, scroll naturally */}
-      <BlurredSection unlocked={unlocked} onUnlock={handleUnlockClick} title="Mindset Results">
+      {/* 4. Gated sections — stacked single column, scroll naturally */}
+      <BlurredSection unlocked={unlocked} onUnlock={openUnlock} title="Mindset Results">
         {gatedContent && <MindsetResults gatedContent={gatedContent} />}
       </BlurredSection>
 
-      <BlurredSection unlocked={unlocked} onUnlock={handleUnlockClick} title="Knowledge & Tools Results">
+      <BlurredSection unlocked={unlocked} onUnlock={openUnlock} title="Knowledge & Tools Results">
         {gatedContent && <KnowledgeToolsResults gatedContent={gatedContent} />}
       </BlurredSection>
 
-      <BlurredSection unlocked={unlocked} onUnlock={handleUnlockClick} title="Journey Map">
+      <BlurredSection unlocked={unlocked} onUnlock={openUnlock} title="Journey Map">
         {gatedContent && <ProfileSuggestions gatedContent={gatedContent} profile={profile} />}
       </BlurredSection>
 
-      {/* Modals */}
-      {showUnlock && <UnlockModal onPay={handlePay} onClose={() => setShowUnlock(false)} />}
-      {showStripe && <StripeModal onSuccess={handlePaySuccess} onClose={() => setShowStripe(false)} />}
+      {showUnlock && <UnlockModal onPay={pay} onClose={() => setShowUnlock(false)} />}
+      {showStripe && <StripeModal onSuccess={paid} onClose={() => setShowStripe(false)} />}
     </div>
   );
 }

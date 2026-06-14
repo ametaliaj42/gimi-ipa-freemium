@@ -1,55 +1,58 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { questions } from '../utils/scoring.js';
-import ProgressBar from './ProgressBar.jsx';
 
-const SECTION_COLORS = { mindset: '#00ACC1', knowledge: '#7C3AED' };
-const SECTION_BG     = { mindset: '#E0F7FA', knowledge: '#F5F3FF' };
+const SECTION = { mindset: { label: '🧠 Innovation Mindset', color: '#00ACC1', bg: '#E0F7FA' }, knowledge: { label: '🔧 Knowledge & Tools', color: '#7C3AED', bg: '#F5F3FF' } };
 
 export default function QuizInterface({ answers, onAnswer, onComplete }) {
   const [current, setCurrent] = useState(0);
-  const [selected, setSelected] = useState(null);
-  const [anim, setAnim] = useState('entering');
+  const [chosen, setChosen] = useState(null);
+  const [anim, setAnim] = useState('qin');
 
   const q = questions[current];
-  const prev = answers.find(a => a.questionId === q.id);
-  const active = selected !== null ? selected : (prev?.optionIndex ?? null);
-
-  useEffect(() => { setAnim('entering'); }, [current]);
+  const existing = answers.find(a => a.questionId === q.id);
+  const active = chosen !== null ? chosen : (existing?.optionIndex ?? null);
+  const sec = SECTION[q.category];
+  const pct = Math.round(((current + 1) / questions.length) * 100);
 
   const go = (dir) => {
-    setAnim('exiting');
+    if (dir === 1 && active === null) return;
+    setAnim('qout');
     setTimeout(() => {
-      if (dir === 1 && active !== null) onAnswer(q.id, active);
-      if (dir === 1 && current === questions.length - 1) { onComplete(); return; }
+      if (dir === 1) {
+        onAnswer(q.id, active);
+        if (current === questions.length - 1) { onComplete(); return; }
+      }
       setCurrent(c => c + dir);
-      setSelected(null);
+      setChosen(null);
+      setAnim('qin');
     }, 160);
   };
 
-  const color = SECTION_COLORS[q.category];
-  const bg    = SECTION_BG[q.category];
-
   return (
-    <div className="quiz-wrap">
-      <ProgressBar current={current + 1} total={questions.length} section={q.category} />
+    <div className="quiz-screen">
+      {/* Progress */}
+      <div className="quiz-progress">
+        <div className="quiz-prog-top">
+          <span className="quiz-prog-section" style={{ color: sec.color }}>{sec.label}</span>
+          <span className="quiz-prog-count">{current + 1} / {questions.length}</span>
+        </div>
+        <div className="quiz-prog-track">
+          <div className="quiz-prog-fill" style={{ width: `${pct}%`, background: sec.color }} />
+        </div>
+      </div>
 
+      {/* Card */}
       <div className={`quiz-card ${anim}`}>
-        <span className="quiz-section-label" style={{ color, background: bg }}>
-          {q.category === 'mindset' ? '🧠 Innovation Mindset' : '🔧 Knowledge & Tools'}
+        <span className="quiz-section-tag" style={{ color: sec.color, background: sec.bg }}>
+          {q.category === 'mindset' ? 'Innovation Mindset' : 'Knowledge & Tools'} · Question {current + 1}
         </span>
 
-        <p className="quiz-q">{q.text}</p>
+        <p className="quiz-question">{q.text}</p>
 
         <div className="quiz-options">
           {q.options.map((opt, idx) => (
-            <button
-              key={idx}
-              className={`quiz-opt${active === idx ? ' selected' : ''}`}
-              onClick={() => setSelected(idx)}
-            >
-              <span className="quiz-opt-marker">
-                <span className="quiz-opt-marker-dot" />
-              </span>
+            <button key={idx} className={`quiz-opt${active === idx ? ' selected' : ''}`} onClick={() => setChosen(idx)}>
+              <span className="quiz-opt-radio"><span className="quiz-opt-dot"/></span>
               <span className="quiz-opt-text">{opt.t}</span>
             </button>
           ))}
@@ -57,13 +60,8 @@ export default function QuizInterface({ answers, onAnswer, onComplete }) {
 
         <div className="quiz-nav">
           <button className="btn btn-ghost" onClick={() => go(-1)} disabled={current === 0}>← Back</button>
-          <span className="quiz-spacer" />
-          <button
-            className="btn btn-primary"
-            onClick={() => go(1)}
-            disabled={active === null}
-            style={{ minWidth: 140 }}
-          >
+          <span className="quiz-nav-spacer"/>
+          <button className="btn btn-teal" style={{ minWidth: 130 }} onClick={() => go(1)} disabled={active === null}>
             {current === questions.length - 1 ? 'See My Profile →' : 'Next →'}
           </button>
         </div>

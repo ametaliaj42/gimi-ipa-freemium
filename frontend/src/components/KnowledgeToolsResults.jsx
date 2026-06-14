@@ -1,29 +1,32 @@
+const GROUPS = [
+  {key:'driver',  title:'Drivers',  desc:'Your strongest K&T dimensions.',                           color:'#059669', bg:'#ECFDF5', border:'#6EE7B744'},
+  {key:'enabler', title:'Enablers', desc:'Good foundations — targeted development will make these drivers.', color:'#D97706', bg:'#FFFBEB', border:'#FDE68A44'},
+  {key:'barrier', title:'Barriers', desc:'Priority K&T gaps — highest leverage for your growth.',    color:'#DC2626', bg:'#FEF2F2', border:'#FCA5A544'},
+];
 export default function KnowledgeToolsResults({ gatedContent }) {
-  const { ktDetail } = gatedContent;
+  const { ktDetail: d } = gatedContent;
   return (
-    <div className="detail-wrap">
+    <div className="detail-body">
       <h3 className="detail-h">🔧 Knowledge & Tools — Detailed Results</h3>
-      <div className="detail-insight">{ktDetail.insight}</div>
+      <div className="detail-insight">{d.insight}</div>
       <div className="sub-groups">
-        {[
-          { title: 'Drivers', desc: 'Dimensions where your knowledge and tools are strongest.', color: '#059669', bg: '#ECFDF5', items: ktDetail.drivers },
-          { title: 'Enablers', desc: 'Good foundations — targeted development will make these drivers.', color: '#D97706', bg: '#FFFBEB', items: ktDetail.enablers },
-          { title: 'Barriers', desc: 'Priority gaps — highest leverage for your development.', color: '#DC2626', bg: '#FEF2F2', items: ktDetail.barriers },
-        ].filter(g => g.items.length).map(g => (
-          <div key={g.title} className="sub-group" style={{ background: g.bg, borderColor: g.color + '44' }}>
-            <div className="sub-group-head" style={{ color: g.color }}>{g.title}</div>
-            <div className="sub-group-desc">{g.desc}</div>
-            {g.items.map(s => (
-              <div key={s.key} className="sub-item">
-                <span className="sub-item-label">{s.label}</span>
-                <div className="sub-bar-track">
-                  <div className="sub-bar-fill" style={{ width: `${s.score}%`, background: g.color }} />
+        {GROUPS.map(g => {
+          const items = d[g.key + 's'];
+          if (!items?.length) return null;
+          return (
+            <div key={g.key} className="sub-group" style={{ background: g.bg, borderColor: g.border }}>
+              <div className="sub-g-head" style={{ color: g.color }}>{g.title}</div>
+              <div className="sub-g-desc">{g.desc}</div>
+              {items.map(s => (
+                <div key={s.key} className="sub-row">
+                  <span className="sub-row-label">{s.label}</span>
+                  <div className="sub-track"><div className="sub-fill" style={{ width: `${s.score}%`, background: g.color }}/></div>
+                  <span className="sub-score" style={{ color: g.color }}>{s.score}</span>
                 </div>
-                <span className="sub-item-score" style={{ color: g.color }}>{s.score}</span>
-              </div>
-            ))}
-          </div>
-        ))}
+              ))}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

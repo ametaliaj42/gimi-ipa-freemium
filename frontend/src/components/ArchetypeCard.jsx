@@ -1,96 +1,81 @@
-import ScoreRing from './ScoreRing.jsx';
 import { allProfiles } from '../utils/profiles.js';
 
-const scoreColor = s => s >= 67 ? '#059669' : s >= 34 ? '#D97706' : '#DC2626';
+const sc = s => s >= 67 ? '#059669' : s >= 34 ? '#D97706' : '#DC2626';
 
 export default function ArchetypeCard({ report }) {
   const { profile, scores, userInfo } = report;
-  const mc = scoreColor(scores.mindset);
-  const kc = scoreColor(scores.kt);
+  const mc = sc(scores.mindset), kc = sc(scores.kt);
 
   return (
     <div className="profile-hero">
       {/* Banner */}
-      <div className="profile-hero-banner"
-           style={{ background: `linear-gradient(135deg, #041628 0%, ${profile.color}55 100%)` }}>
-        <span className="profile-hero-emoji">{profile.emoji}</span>
-        <div className="profile-hero-text">
-          {userInfo?.name && <p className="profile-hero-greeting">Hello, {userInfo.name} 👋</p>}
-          <h2 className="profile-hero-name">{profile.name}</h2>
-          <p className="profile-hero-tagline">{profile.tagline}</p>
-          {userInfo?.jobTitle && (
-            <p className="profile-hero-role">{userInfo.jobTitle}{userInfo.country ? ` · ${userInfo.country}` : ''}</p>
-          )}
-        </div>
-      </div>
-
-      {/* Score row */}
-      <div className="profile-hero-scores">
-        <div className="hero-score-item">
-          <span className="hero-score-label">Innovation Mindset</span>
-          <div className="score-ring-wrap">
-            <ScoreRing score={scores.mindset} size={88} color={mc} />
-          </div>
-        </div>
-        <div className="hero-score-item">
-          <span className="hero-score-label">Knowledge & Tools</span>
-          <div className="score-ring-wrap">
-            <ScoreRing score={scores.kt} size={88} color={kc} />
-          </div>
+      <div className="profile-hero-top" style={{ background: `linear-gradient(135deg, #041628 0%, ${profile.color}44 100%)` }}>
+        <span className="hero-emoji">{profile.emoji}</span>
+        <div className="hero-text">
+          {userInfo?.name && <p className="hero-greeting">Hello, {userInfo.name} 👋</p>}
+          <h2 className="hero-name">{profile.name}</h2>
+          <p className="hero-tagline">{profile.tagline}</p>
+          {userInfo?.jobTitle && <p className="hero-role">{userInfo.jobTitle}{userInfo.country ? ` · ${userInfo.country}` : ''}</p>}
         </div>
       </div>
 
       {/* Description */}
-      <div style={{ padding: '18px 24px 20px', borderTop: '1px solid #DDE4EE' }}>
-        <p style={{ fontSize: 13, color: '#374B62', lineHeight: 1.65 }}>{profile.description}</p>
+      <div className="profile-hero-desc">{profile.description}</div>
+
+      {/* Scores */}
+      <div className="profile-hero-scores">
+        <div className="hero-score-col">
+          <div>
+            <div className="hsc-label">Innovation Mindset</div>
+            <div className="hsc-num" style={{ color: mc }}>{scores.mindset}</div>
+            <div className="hsc-sub">out of 100</div>
+          </div>
+        </div>
+        <div className="hero-score-col">
+          <div>
+            <div className="hsc-label">Knowledge & Tools</div>
+            <div className="hsc-num" style={{ color: kc }}>{scores.kt}</div>
+            <div className="hsc-sub">out of 100</div>
+          </div>
+        </div>
       </div>
 
-      {/* Plot */}
-      <ProfilePlot profile={profile} scores={scores} />
+      {/* 2D Plot */}
+      <div className="profile-plot-wrap">
+        <p className="plot-title">Your position among the 7 Innovation Profiles</p>
+        <Plot profile={profile} scores={scores} />
+      </div>
     </div>
   );
 }
 
-function ProfilePlot({ profile, scores }) {
-  const W = 300, H = 200, pad = 32;
-  const toX = v => pad + (v / 100) * (W - pad * 2);
-  const toY = v => H - pad - (v / 100) * (H - pad * 2);
-
+function Plot({ profile, scores }) {
+  const W = 340, H = 200, P = 32;
+  const tx = v => P + (v / 100) * (W - P * 2);
+  const ty = v => H - P - (v / 100) * (H - P * 2);
   return (
-    <div style={{ padding: '0 20px 20px', borderTop: '1px solid #F0F4F9' }}>
-      <p style={{ fontSize: 11, color: '#6B7E95', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.05em', margin: '14px 0 10px' }}>
-        Your position among the 7 Innovation Profiles
-      </p>
-      <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', background: '#F4F7FB', borderRadius: 10 }}>
-        {/* Grid lines */}
-        {[33, 67].map(v => (
-          <g key={v}>
-            <line x1={toX(v)} y1={pad} x2={toX(v)} y2={H - pad} stroke="#DDE4EE" strokeWidth="1" strokeDasharray="3,3" />
-            <line x1={pad} y1={toY(v)} x2={W - pad} y2={toY(v)} stroke="#DDE4EE" strokeWidth="1" strokeDasharray="3,3" />
+    <svg viewBox={`0 0 ${W} ${H}`} className="plot-svg">
+      {[33, 67].map(v => (
+        <g key={v}>
+          <line x1={tx(v)} y1={P} x2={tx(v)} y2={H - P} stroke="#DDE4EE" strokeWidth="1" strokeDasharray="3,3"/>
+          <line x1={P} y1={ty(v)} x2={W - P} y2={ty(v)} stroke="#DDE4EE" strokeWidth="1" strokeDasharray="3,3"/>
+        </g>
+      ))}
+      <line x1={P} y1={H-P} x2={W-P} y2={H-P} stroke="#C8D4E0" strokeWidth="1"/>
+      <line x1={P} y1={P}   x2={P}   y2={H-P} stroke="#C8D4E0" strokeWidth="1"/>
+      <text x={W/2} y={H-6} textAnchor="middle" fontSize="9" fill="#7A92A8">Knowledge &amp; Tools →</text>
+      <text x={12} y={H/2} textAnchor="middle" fontSize="9" fill="#7A92A8" transform={`rotate(-90 12 ${H/2})`}>Mindset →</text>
+      {allProfiles.map(p => {
+        const isMe = p.id === profile.id;
+        const px = tx(p.plotX), py = ty(p.plotY);
+        return (
+          <g key={p.id}>
+            <circle cx={px} cy={py} r={isMe ? 14 : 10} fill={isMe ? p.color : p.color + '44'}/>
+            <text x={px} y={py+1} textAnchor="middle" dominantBaseline="middle" fontSize={isMe ? 10 : 8}>{p.emoji}</text>
           </g>
-        ))}
-        {/* Axes */}
-        <line x1={pad} y1={H - pad} x2={W - pad} y2={H - pad} stroke="#CDD9E8" strokeWidth="1" />
-        <line x1={pad} y1={pad} x2={pad} y2={H - pad} stroke="#CDD9E8" strokeWidth="1" />
-        <text x={W / 2} y={H - 8} textAnchor="middle" fontSize="9" fill="#6B7E95">Knowledge &amp; Tools →</text>
-        <text x={12} y={H / 2} textAnchor="middle" fontSize="9" fill="#6B7E95" transform={`rotate(-90 12 ${H / 2})`}>Mindset →</text>
-
-        {/* Profile dots */}
-        {allProfiles.map(p => {
-          const isMe = p.id === profile.id;
-          const px = toX(p.plotX), py = toY(p.plotY);
-          return (
-            <g key={p.id}>
-              <circle cx={px} cy={py} r={isMe ? 13 : 9} fill={isMe ? p.color : p.color + '55'} />
-              <text x={px} y={py + 1} textAnchor="middle" dominantBaseline="middle" fontSize={isMe ? 10 : 8}>{p.emoji}</text>
-            </g>
-          );
-        })}
-
-        {/* User exact position ring */}
-        <circle cx={toX(scores.kt)} cy={toY(scores.mindset)} r={17} fill="none"
-          stroke={profile.color} strokeWidth="2.5" strokeDasharray="5,3" opacity=".7" />
-      </svg>
-    </div>
+        );
+      })}
+      <circle cx={tx(scores.kt)} cy={ty(scores.mindset)} r={19} fill="none" stroke={profile.color} strokeWidth="2" strokeDasharray="4,3" opacity=".6"/>
+    </svg>
   );
 }
