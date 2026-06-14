@@ -1,0 +1,218 @@
+export const questions = [
+  // ─── MINDSET: Growth Mindset ───────────────────────────────────────────────
+  {
+    id: 1,
+    category: 'mindset',
+    subcategory: 'growthMindset',
+    text: 'When you encounter a significant setback on an innovation project, what is your typical reaction?',
+    options: [
+      { label: 'I see it as valuable learning and immediately adjust my approach', score: 5 },
+      { label: 'I analyze what went wrong and try a different way', score: 4 },
+      { label: 'I feel frustrated but eventually move forward', score: 3 },
+      { label: 'I question whether the project is worth continuing', score: 2 },
+      { label: 'I conclude the approach will not work and move on', score: 1 },
+    ],
+  },
+  {
+    id: 2,
+    category: 'mindset',
+    subcategory: 'growthMindset',
+    text: 'How do you respond to feedback that challenges your ideas?',
+    options: [
+      { label: 'I actively seek critical feedback and use it to improve', score: 5 },
+      { label: 'I welcome it and usually incorporate useful points', score: 4 },
+      { label: 'I listen but sometimes struggle to act on criticism', score: 3 },
+      { label: 'I find it difficult to separate feedback from personal criticism', score: 2 },
+      { label: 'I prefer to proceed with my original idea', score: 1 },
+    ],
+  },
+  // ─── MINDSET: Grit ─────────────────────────────────────────────────────────
+  {
+    id: 3,
+    category: 'mindset',
+    subcategory: 'grit',
+    text: 'How do you maintain focus on long-term innovation goals when short-term pressures arise?',
+    options: [
+      { label: 'I consistently prioritise long-term goals despite short-term distractions', score: 5 },
+      { label: 'I usually stay focused but sometimes get pulled into immediate needs', score: 4 },
+      { label: 'I balance both, sometimes losing sight of either', score: 3 },
+      { label: 'Short-term pressures frequently override my innovation goals', score: 2 },
+      { label: 'I primarily focus on immediate deliverables', score: 1 },
+    ],
+  },
+  {
+    id: 4,
+    category: 'mindset',
+    subcategory: 'grit',
+    text: 'When an innovation initiative faces repeated obstacles, what do you do?',
+    options: [
+      { label: 'I persist and find creative solutions regardless of how many obstacles arise', score: 5 },
+      { label: 'I persevere through most obstacles with occasional pivots', score: 4 },
+      { label: 'I continue but sometimes need external motivation to push through', score: 3 },
+      { label: 'I look for reasons to pivot or stop if obstacles are significant', score: 2 },
+      { label: 'I escalate or abandon when obstacles become too frequent', score: 1 },
+    ],
+  },
+  // ─── MINDSET: Creative Collaboration ───────────────────────────────────────
+  {
+    id: 5,
+    category: 'mindset',
+    subcategory: 'creativeCollaboration',
+    text: 'How do you approach co-creating ideas with people from very different backgrounds?',
+    options: [
+      { label: 'I thrive on diverse perspectives and actively build on different viewpoints', score: 5 },
+      { label: 'I appreciate diversity and usually find it energising', score: 4 },
+      { label: 'I work well with diverse teams but prefer familiar collaborators', score: 3 },
+      { label: 'I find it challenging to align across very different perspectives', score: 2 },
+      { label: 'I prefer working with people who share my background and approach', score: 1 },
+    ],
+  },
+  {
+    id: 6,
+    category: 'mindset',
+    subcategory: 'creativeCollaboration',
+    text: 'In a brainstorming session, what role do you naturally take?',
+    options: [
+      { label: 'I actively build on others\' ideas while generating many of my own', score: 5 },
+      { label: 'I contribute ideas and help expand on others\' concepts', score: 4 },
+      { label: 'I participate but tend to be selective about contributing', score: 3 },
+      { label: 'I mostly evaluate ideas rather than generate new ones', score: 2 },
+      { label: 'I prefer structured problem-solving over open brainstorming', score: 1 },
+    ],
+  },
+  // ─── MINDSET: Flexible Execution ───────────────────────────────────────────
+  {
+    id: 7,
+    category: 'mindset',
+    subcategory: 'flexibleExecution',
+    text: 'When you discover mid-project that your initial approach is not working, what do you do?',
+    options: [
+      { label: 'I pivot quickly and restructure the entire approach if needed', score: 5 },
+      { label: 'I adjust the approach while maintaining core project goals', score: 4 },
+      { label: 'I make incremental adjustments and monitor results', score: 3 },
+      { label: 'I prefer to exhaust the current approach before considering changes', score: 2 },
+      { label: 'I wait for direction before changing course', score: 1 },
+    ],
+  },
+  {
+    id: 8,
+    category: 'mindset',
+    subcategory: 'flexibleExecution',
+    text: 'How comfortable are you with ambiguity and undefined processes in innovation work?',
+    options: [
+      { label: 'I am energised by ambiguity and create structure as needed', score: 5 },
+      { label: 'I am comfortable with ambiguity and operate effectively within it', score: 4 },
+      { label: 'I can manage ambiguity but prefer some defined structure', score: 3 },
+      { label: 'Ambiguity slows my progress and makes me uncomfortable', score: 2 },
+      { label: 'I require clear processes and defined outcomes to work effectively', score: 1 },
+    ],
+  },
+  // ─── K&T: Intent ───────────────────────────────────────────────────────────
+  {
+    id: 9,
+    category: 'knowledge',
+    subcategory: 'intent',
+    text: 'How clearly can you articulate the strategic purpose of innovation within your organisation?',
+    options: [
+      { label: 'I clearly connect innovation initiatives to business strategy and value creation', score: 5 },
+      { label: 'I understand our innovation direction and can explain it to others', score: 4 },
+      { label: 'I have a general sense of our innovation goals but not the full picture', score: 3 },
+      { label: 'I focus on my specific role without full visibility into innovation strategy', score: 2 },
+      { label: 'Innovation strategy is not clearly defined or communicated where I work', score: 1 },
+    ],
+  },
+  {
+    id: 10,
+    category: 'knowledge',
+    subcategory: 'intent',
+    text: 'How do you define success for an innovation initiative before starting?',
+    options: [
+      { label: 'I establish clear metrics tied to strategic outcomes and customer value', score: 5 },
+      { label: 'I define success criteria balancing business impact and learning', score: 4 },
+      { label: 'I set general goals but refine metrics as the project progresses', score: 3 },
+      { label: 'I rely on qualitative feedback to evaluate success', score: 2 },
+      { label: 'Success is determined by leadership after the fact', score: 1 },
+    ],
+  },
+  // ─── K&T: Concepts ─────────────────────────────────────────────────────────
+  {
+    id: 11,
+    category: 'knowledge',
+    subcategory: 'concepts',
+    text: 'How familiar are you with structured innovation frameworks (Design Thinking, Jobs-to-be-Done, Stage-Gate)?',
+    options: [
+      { label: 'I apply multiple frameworks fluidly and adapt them to context', score: 5 },
+      { label: 'I am proficient in 2-3 frameworks and know when to apply them', score: 4 },
+      { label: 'I am familiar with frameworks but apply them inconsistently', score: 3 },
+      { label: 'I have basic awareness but limited practical application', score: 2 },
+      { label: 'I am not familiar with formal innovation frameworks', score: 1 },
+    ],
+  },
+  {
+    id: 12,
+    category: 'knowledge',
+    subcategory: 'concepts',
+    text: 'How do you identify and validate innovation opportunities before investing resources?',
+    options: [
+      { label: 'I use systematic research: market analysis, user research, competitive intelligence', score: 5 },
+      { label: 'I conduct targeted user research and market analysis for key decisions', score: 4 },
+      { label: 'I gather some qualitative feedback before proceeding', score: 3 },
+      { label: 'I rely primarily on internal observations and team input', score: 2 },
+      { label: 'I proceed based on intuition or executive direction', score: 1 },
+    ],
+  },
+  // ─── K&T: Resources ────────────────────────────────────────────────────────
+  {
+    id: 13,
+    category: 'knowledge',
+    subcategory: 'resources',
+    text: 'How effectively do you access and deploy resources (people, budget, tools) for innovation?',
+    options: [
+      { label: 'I have strong networks and proven methods to secure and deploy resources quickly', score: 5 },
+      { label: 'I can usually access needed resources and manage them well', score: 4 },
+      { label: 'I access resources but sometimes face delays or limitations', score: 3 },
+      { label: 'Resource access is a frequent challenge that slows my work', score: 2 },
+      { label: 'Limited resources significantly constrain my ability to innovate', score: 1 },
+    ],
+  },
+  {
+    id: 14,
+    category: 'knowledge',
+    subcategory: 'resources',
+    text: 'How do you leverage external partnerships, startups, or ecosystems for innovation?',
+    options: [
+      { label: 'I systematically identify and integrate external partners into our innovation pipeline', score: 5 },
+      { label: 'I actively seek external partnerships and have established key relationships', score: 4 },
+      { label: 'I engage external partners occasionally when the opportunity arises', score: 3 },
+      { label: 'I am aware of the value but have not established meaningful partnerships', score: 2 },
+      { label: 'We primarily rely on internal capabilities for innovation', score: 1 },
+    ],
+  },
+  // ─── K&T: Make it Real ─────────────────────────────────────────────────────
+  {
+    id: 15,
+    category: 'knowledge',
+    subcategory: 'makeItReal',
+    text: 'How do you move innovation concepts from idea to tested prototype or pilot?',
+    options: [
+      { label: 'I run rapid experiments with clear learning goals and scale what works', score: 5 },
+      { label: 'I build MVPs and test with real users before full investment', score: 4 },
+      { label: 'I develop prototypes but user testing is inconsistent', score: 3 },
+      { label: 'I tend to develop more comprehensive solutions before testing', score: 2 },
+      { label: 'Most ideas remain as concepts without structured implementation', score: 1 },
+    ],
+  },
+  {
+    id: 16,
+    category: 'knowledge',
+    subcategory: 'makeItReal',
+    text: 'How do you measure and communicate the impact of innovation initiatives?',
+    options: [
+      { label: 'I track KPIs throughout the innovation lifecycle and report impact clearly', score: 5 },
+      { label: 'I measure outcomes at key milestones and share results with stakeholders', score: 4 },
+      { label: 'I measure success at end of projects but not consistently throughout', score: 3 },
+      { label: 'Measurement is informal and primarily based on stakeholder feedback', score: 2 },
+      { label: 'Impact measurement is not a structured part of my work', score: 1 },
+    ],
+  },
+];
